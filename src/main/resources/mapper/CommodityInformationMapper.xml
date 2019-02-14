@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.casic.demo.dao.mapper.CommodityInformationMapper">
+    <select id="pageQueryCommodityInformation" resultType="com.casic.demo.entity.CommodityInformation">
+        SELECT
+          id,
+          barcode,
+          NAME,
+          price,
+          spec,
+          brand,
+          country,
+          company,
+          addr,
+          remark,
+          have_barcode AS haveBarcode,
+          create_person AS createPerson,
+          create_date AS createDate,
+          update_person AS updatePerson,
+          update_date AS updateDate
+        FROM
+          commodity_information
+        WHERE
+          is_deleted = '0'
+          <if test="haveBarcode != null">
+              AND have_barcode = #{haveBarcode}
+          </if>
+          <if test="name != null and name != ''">
+              AND NAME LIKE CONCAT('%',#{name},'%')
+          </if>
+        <if test="createDate != null and createDate != ''">
+              AND DATE_FORMAT(create_date,'%Y-%m-%d') = #{createDate}
+        </if>
+        order by create_date desc
+    </select>
+
+</mapper>
