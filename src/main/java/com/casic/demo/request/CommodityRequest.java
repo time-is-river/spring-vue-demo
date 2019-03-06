@@ -8,6 +8,7 @@ import lombok.Data;
  */
 @Data
 public class CommodityRequest {
+    private String barcode;
     private String name;
     private String createDate;
     private Boolean haveBarcode;

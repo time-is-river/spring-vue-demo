@@ -53,6 +53,8 @@ public class CommodityInformation{
     private String updatePerson;
     @Column(columnDefinition = "timestamp comment '创建时间'")
     private Date updateDate;
+    @Column(columnDefinition = "int(6) comment '商品库存'")
+    private int repertory;
     @Column(columnDefinition = "varchar(200) comment '备注信息'")
     private String remark;
 

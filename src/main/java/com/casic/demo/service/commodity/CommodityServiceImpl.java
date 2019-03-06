@@ -46,7 +46,7 @@ public class CommodityServiceImpl implements CommodityService{
         restResult.setMessage(Constants.ReturnCode.SUCCESS.getMsg());
         try {
             PageInfo<CommodityInformation> commodityInfo =  PageHelper.startPage(commodityRequest.getPage(), commodityRequest.getSize(), true, false, false).doSelectPageInfo(()
-                    -> commodityInformationMapper.pageQueryCommodityInformation(commodityRequest.getName(), commodityRequest.getCreateDate(), commodityRequest.getHaveBarcode()));
+                    -> commodityInformationMapper.pageQueryCommodityInformation(commodityRequest.getBarcode(), commodityRequest.getName(), commodityRequest.getCreateDate(), commodityRequest.getHaveBarcode()));
             restResult.setData(commodityInfo);
         } catch (RuntimeException e) {
             restResult.setCode(Constants.ReturnCode.FAILURE.getCode());
@@ -68,6 +68,7 @@ public class CommodityServiceImpl implements CommodityService{
                     //编辑信息
                     //todo 查询原有信息
                     CommodityInformation commodityInformation = commodityInformationRepository.findByIdAndIsDeleted(commodityInformationRequest.getId(), false);
+                    commodityInformation.setBarcode(commodityInformationRequest.getBarcode());
                     commodityInformation.setPrice(commodityInformationRequest.getPrice());
                     commodityInformation.setName(commodityInformationRequest.getName());
                     commodityInformation.setSpec(commodityInformationRequest.getSpec());
@@ -79,6 +80,13 @@ public class CommodityServiceImpl implements CommodityService{
                     //新增信息
                     if (commodityInformationRequest.getBarcode() != null) {
                         //todo 查询商品数据库 匹配商品相关信息
+
+                        //有条码信息
+                        commodityInformationRequest.setIsDeleted(false);
+                        commodityInformationRequest.setHaveBarcode(true);
+                        commodityInformationRequest.setCreatePerson(String.valueOf(currentUser.getName()));
+                        commodityInformationRequest.setCreateDate(new Date());
+                        commodityInformationRepository.save(commodityInformationRequest);
                     } else {
                         //无条码商品
                         commodityInformationRequest.setIsDeleted(false);

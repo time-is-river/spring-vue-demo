@@ -20,5 +20,5 @@ public interface CommodityInformationMapper {
      * @param createDate
      * @return
      */
-    List<CommodityInformation> pageQueryCommodityInformation(@Param("name") String name, @Param("createDate") String createDate, @Param("haveBarcode") boolean haveBarcode);
+    List<CommodityInformation> pageQueryCommodityInformation(@Param("barcode") String barcode, @Param("name") String name, @Param("createDate") String createDate, @Param("haveBarcode") boolean haveBarcode);
 }

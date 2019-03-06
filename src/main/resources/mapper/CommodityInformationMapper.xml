@@ -8,6 +8,7 @@
           NAME,
           price,
           spec,
+          repertory,
           brand,
           country,
           company,
@@ -24,6 +25,9 @@
           is_deleted = '0'
           <if test="haveBarcode != null">
               AND have_barcode = #{haveBarcode}
+          </if>
+          <if test="barcode != null and barcode != ''">
+              AND barcode LIKE CONCAT('%',#{barcode},'%')
           </if>
           <if test="name != null and name != ''">
               AND NAME LIKE CONCAT('%',#{name},'%')
