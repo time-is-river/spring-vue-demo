@@ -51,7 +51,7 @@ public class CommodityServiceImpl implements CommodityService{
         } catch (RuntimeException e) {
             restResult.setCode(Constants.ReturnCode.FAILURE.getCode());
             restResult.setMessage(e.getMessage());
-            //todo 记录日志信息
+            //todo 记录日志信息到文件
         }
         return restResult;
     }
