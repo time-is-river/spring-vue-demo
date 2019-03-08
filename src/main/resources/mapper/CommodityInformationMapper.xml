@@ -27,7 +27,7 @@
               AND have_barcode = #{haveBarcode}
           </if>
           <if test="barcode != null and barcode != ''">
-              AND barcode LIKE CONCAT('%',#{barcode},'%')
+              AND barcode = #{barcode}
           </if>
           <if test="name != null and name != ''">
               AND NAME LIKE CONCAT('%',#{name},'%')

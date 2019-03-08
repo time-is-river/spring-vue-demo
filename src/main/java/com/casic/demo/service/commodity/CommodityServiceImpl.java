@@ -8,6 +8,7 @@ import com.casic.demo.entity.RestResult;
 import com.casic.demo.entity.SysUser;
 import com.casic.demo.request.CommodityRequest;
 import com.casic.demo.service.user.SysUserService;
+import com.casic.demo.utils.BarcodeUtils;
 import com.casic.demo.utils.Constants;
 import com.github.pagehelper.Constant;
 import com.github.pagehelper.PageHelper;
@@ -52,6 +53,22 @@ public class CommodityServiceImpl implements CommodityService{
             restResult.setCode(Constants.ReturnCode.FAILURE.getCode());
             restResult.setMessage(e.getMessage());
             //todo 记录日志信息到文件
+        }
+        return restResult;
+    }
+
+    @Override
+    public RestResult queryCommodityInformationByBarcode(String barcode) {
+        RestResult restResult = new RestResult();
+        restResult.setSuccess(true);
+        restResult.setCode(Constants.ReturnCode.SUCCESS.getCode());
+        restResult.setMessage(Constants.ReturnCode.SUCCESS.getMsg());
+        try {
+           CommodityInformation commodityInformation = BarcodeUtils.getGoodsInfoByBarcode(barcode);
+            restResult.setData(commodityInformation);
+        } catch (RuntimeException e) {
+            restResult.setCode(Constants.ReturnCode.FAILURE.getCode());
+            restResult.setMessage(e.getMessage());
         }
         return restResult;
     }

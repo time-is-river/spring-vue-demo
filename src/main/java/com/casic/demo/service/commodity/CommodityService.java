@@ -18,6 +18,13 @@ public interface CommodityService {
     RestResult queryCommodityInformationList(CommodityRequest commodityRequest);
 
     /**
+     * 根据条码信息获取商品信息
+     * @param barcode
+     * @return
+     */
+    RestResult queryCommodityInformationByBarcode(String barcode);
+
+    /**
      * 保存或更新商品信息
      */
     RestResult saveOrUpdate(CommodityInformation commodityInformation);

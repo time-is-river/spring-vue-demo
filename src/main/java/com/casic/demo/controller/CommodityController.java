@@ -26,6 +26,11 @@ public class CommodityController {
         return commodityService.queryCommodityInformationList(commodityRequest);
     }
 
+    @GetMapping(value = "/queryByBarcode")
+    public RestResult queryByBarcode(@RequestParam("barcode") String barcode) {
+        return commodityService.queryCommodityInformationByBarcode(barcode);
+    }
+
     @PostMapping("/saveOrUpdate")
     public RestResult saveOrUpdate(@RequestBody CommodityInformation commodityInformation) {
         return commodityService.saveOrUpdate(commodityInformation);
