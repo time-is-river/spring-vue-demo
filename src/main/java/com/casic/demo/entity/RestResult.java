@@ -1,61 +1,51 @@
 package com.casic.demo.entity;
 
+import lombok.Data;
+
 /**
  * 统一封装API返回信息
  * 千万别加@Entity 否则Hibernate会给你创建表
  * Created by bekey on 2017/12/10.
  */
-public class RestResult {
-    //状态
+@Data
+public class RestResult<T> {
+    /**
+     * 处理结果
+     */
     private boolean success;
-    //状态码
+    /**
+     * 状态码
+     */
     private int code;
-    //消息
+    /**
+     * 消息
+     */
     private String message;
-    //额外的内容
-    private Object data;
+    /**
+     * data
+     */
+    private T data;
 
     public RestResult(){
-
     }
 
-    public RestResult setCode(ResultCode code) {
-        this.code = code.getCode();
-        return this;
-    }
-
-    public int getCode() {
-        return code;
-    }
-
-    public RestResult setCode(int code) {
+    public RestResult(int code, String message) {
         this.code = code;
-        return this;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public RestResult setMessage(String message) {
         this.message = message;
-        return this;
     }
 
-    public Object getData() {
-        return data;
-    }
-
-    public RestResult setData(Object data) {
+    public RestResult(int code, String message, T data) {
+        this.code = code;
+        this.message = message;
         this.data = data;
-        return this;
     }
 
-    public boolean isSuccess() {
-        return success;
-    }
-
-    public void setSuccess(boolean success) {
+    public RestResult(boolean success,int code, String message, T data) {
         this.success = success;
+        this.code = code;
+        this.message = message;
+        this.data = data;
     }
+
+
 }

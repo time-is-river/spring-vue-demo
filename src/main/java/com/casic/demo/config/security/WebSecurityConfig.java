@@ -37,7 +37,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/favicon.ico")
                 .antMatchers("/user/login")
                 .antMatchers("/user/login/**")
-                .antMatchers("/user/register/**");
+                .antMatchers("/user/register/**")
+                .antMatchers("/captcha/**");
     }
 
     @Override
