@@ -1,5 +1,6 @@
 package com.casic.demo.controller;
 
+import com.casic.demo.entity.LoginRequest;
 import com.casic.demo.entity.RestResult;
 import com.casic.demo.entity.SysUser;
 import com.casic.demo.service.user.SysUserService;
@@ -9,10 +10,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -38,7 +35,7 @@ public class SysUserController {
     private final ResultGenerator generator;
 
     @Autowired
-    private AuthenticationManager authenticationManager;
+    private SysUserService sysUserService;
 
     @Autowired  //自动装配
     public SysUserController(SysUserService userService, ResultGenerator generator) {
@@ -63,23 +60,8 @@ public class SysUserController {
      * @return 登陆成功则返回相关信息，否则返回错误提示
      */
     @RequestMapping(value = "/login",method = RequestMethod.POST)
-    public RestResult login(@RequestParam("name") String name, @RequestParam("password") String password, HttpSession session) {
-        UsernamePasswordAuthenticationToken authRequest = new UsernamePasswordAuthenticationToken(name, password);
-        try {
-            //此处调用loadUserByUserName
-            Authentication authentication = authenticationManager.authenticate(authRequest);
-            SecurityContextHolder.getContext().setAuthentication(authentication);
-            session.setAttribute("SPRING_SECURITY_CONTEXT",SecurityContextHolder.getContext());
-            return generator.getSuccessResult("验证通过,登陆成功",SecurityContextHolder.getContext().getAuthentication().getPrincipal());
-            /*if(user != null) {
-                //储存到session中
-                session.setAttribute("user",user);
-                return generator.getSuccessResult("登陆成功",user);
-
-            }*/
-        } catch (AuthenticationException e) {
-           return generator.getFailResult("用户名/密码错误");
-        }
+    public RestResult login(@RequestBody LoginRequest loginRequest, HttpSession session) {
+        return sysUserService.login(loginRequest, session);
     }
 
     /**

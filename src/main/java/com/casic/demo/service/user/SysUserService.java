@@ -1,6 +1,10 @@
 package com.casic.demo.service.user;
 
+import com.casic.demo.entity.LoginRequest;
+import com.casic.demo.entity.RestResult;
 import com.casic.demo.entity.SysUser;
+
+import javax.servlet.http.HttpSession;
 
 /**
  * 用户服务层接口
@@ -26,4 +30,13 @@ public interface SysUserService {
      * 获取当前用户信息
      */
     SysUser currentUser();
+
+    /**
+     * 用户网页登录
+     * @param loginRequest
+     * @param httpSession
+     * @return
+     */
+    RestResult login(LoginRequest loginRequest, HttpSession httpSession);
 }
+

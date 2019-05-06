@@ -1,8 +1,8 @@
 package com.casic.demo.service.captcha;
 
 import com.casic.demo.entity.RestResult;
+import com.casic.demo.entity.ResultCode;
 import com.casic.demo.utils.Captcha;
-import com.casic.demo.utils.Constants;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import lombok.Data;
@@ -46,11 +46,12 @@ public class CaptchaService {
         CaptchaCode captchaCode = cache.getIfPresent(key);
         if (captchaCode != null && captchaCode.getExpireTime() != null
                 && LocalDateTime.now().isBefore(captchaCode.expireTime)
-                && captchaCode.getCode().equals(code)) {
-            cache.invalidate(key);
-            return new RestResult<>(true, Constants.ReturnCode.SUCCESS.getCode(), "验证通过", null);
+                && captchaCode.getCode().toUpperCase().equals(code.toUpperCase())) {
+            //验证通过后 删除指定key(因登录时还需要验证 此处不做删除处理)
+            //cache.invalidate(key);
+            return new RestResult<>(true, ResultCode.SUCCESS.getCode(), "验证通过", null);
         } else {
-            return new RestResult<>(false, Constants.ReturnCode.FAILURE.getCode(), "验证失败", null);
+            return new RestResult<>(false, ResultCode.FAIL.getCode(), "验证失败", null);
         }
     }
 
