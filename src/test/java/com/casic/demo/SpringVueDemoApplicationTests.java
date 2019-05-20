@@ -13,7 +13,7 @@ import java.util.HashMap;
 @SpringBootTest(classes = SpringRunner.class)
 public class SpringVueDemoApplicationTests {
 
-	@Test
+	/*@Test
 	public void contextLoads() {
 		 CommodityInformation commodityInformation = BarcodeUtils.getGoodsInfoByBarcode("6907992504476");
 		 System.out.println("ok");
@@ -22,6 +22,6 @@ public class SpringVueDemoApplicationTests {
 	public void readExcel() {
 		POIUtil.readExcel("D:/testDownloads/sql拼接.xlsx");
 		System.out.println("");
-	}
+	}*/
 
 }

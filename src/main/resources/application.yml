@@ -5,9 +5,9 @@ server:
 
 spring:
   datasource: # set database config
-    url: jdbc:mysql://localhost:3306/personal_business?useUnicode=true&characterEncoding=utf8&useSSL=false
-    username: root
-    password: 13914823128m
+    url: jdbc:mysql://47.98.176.197/personal_business?useUnicode=true&characterEncoding=utf8&useSSL=false
+    username: chenxx
+    password: chenxx0505
     driver-class-name: com.mysql.jdbc.Driver
   jpa: # set jpamybatis
     database: MYSQL # specify ths DBMS

@@ -64,6 +64,7 @@ public class SysUserServiceImpl implements SysUserService {
             SecurityContextHolder.getContext().setAuthentication(authentication);
             session.setAttribute("SPRING_SECURITY_CONTEXT",SecurityContextHolder.getContext());
            return new RestResult(ResultCode.SUCCESS.getCode(), "登录成功", SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+           //todo 用户的session 管理需要结合前端 重新设计
             /*if(user != null) {
                 //储存到session中
                 session.setAttribute("user",user);
