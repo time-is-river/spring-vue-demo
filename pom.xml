@@ -143,6 +143,7 @@
 	</dependencies>
 
 	<build>
+		<finalName>SpringVueDemo</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
