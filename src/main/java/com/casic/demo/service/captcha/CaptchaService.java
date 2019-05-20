@@ -7,6 +7,8 @@ import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import lombok.Data;
 import org.apache.commons.lang.RandomStringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
@@ -19,6 +21,7 @@ import java.time.temporal.ChronoUnit;
  */
 @Service
 public class CaptchaService {
+    private Logger logger = LoggerFactory.getLogger(CaptchaService.class);
 
     private Cache<String, CaptchaCode> cache = CacheBuilder.newBuilder()
             .maximumSize(50)
@@ -33,6 +36,7 @@ public class CaptchaService {
         String code = RandomStringUtils.randomAlphanumeric(4);
         cache.put(key, CaptchaCode.of(code, Duration.of(5, ChronoUnit.MINUTES)));
         byte [] image = Captcha.generateImage(code);
+        logger.info("获取图像验证码 请求key:"+key+"  返回：" + image.toString());
         return image;
     }
 
