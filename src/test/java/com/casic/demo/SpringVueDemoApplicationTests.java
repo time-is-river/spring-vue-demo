@@ -18,10 +18,10 @@ public class SpringVueDemoApplicationTests {
 		 CommodityInformation commodityInformation = BarcodeUtils.getGoodsInfoByBarcode("6907992504476");
 		 System.out.println("ok");
 	}
-	@Test
+	/*@Test
 	public void readExcel() {
 		POIUtil.readExcel("D:/testDownloads/sql拼接.xlsx");
 		System.out.println("");
-	}
+	}*/
 
 }

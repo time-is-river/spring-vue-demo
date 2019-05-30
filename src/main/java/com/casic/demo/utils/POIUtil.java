@@ -14,12 +14,12 @@ import org.apache.poi.xssf.usermodel.*;
  */
 public class POIUtil {
 
-    private static String downLoadPath = "D:/testDownloads/处理结果1.txt";
+   /* private static String downLoadPath = "D:/testDownloads/处理结果1.txt";
     //private static String downLoadName = "处理结果.txt";
-    /**
+    *//**
      * 读取excel内容 并写入到文本文件中
      * @param filePath
-     */
+     *//*
     public static void readExcel (String filePath) {
         try {
             BufferedWriter writer;
@@ -53,11 +53,11 @@ public class POIUtil {
 
     }
 
-    /**
+    *//**
      * 获取EXCEL cell中的值
      * @param cell
      * @return
-     */
+     *//*
     private static String getValue(XSSFCell cell) {
         String value;
         switch (cell.getCellType()) {
@@ -73,11 +73,11 @@ public class POIUtil {
         return value;
     }
 
-    /**
+    *//**
      * 创建文件
      * @param fileName
      * @return
-     */
+     *//*
     private static boolean createFile(String fileName) {
         File file = new File(fileName);
         if (file.exists()) {
@@ -104,5 +104,5 @@ public class POIUtil {
             //创建文件异常
             return false;
         }
-    }
+    }*/
 }

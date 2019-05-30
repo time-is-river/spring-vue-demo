@@ -4,6 +4,8 @@ import com.casic.demo.entity.*;
 import com.casic.demo.service.captcha.CaptchaService;
 import com.casic.demo.utils.ResultGenerator;
 import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -21,6 +23,7 @@ import javax.servlet.http.HttpSession;
  */
 @Service("SysUserService")
 public class SysUserServiceImpl implements SysUserService {
+    private Logger logger = LoggerFactory.getLogger(SysUserService.class);
 
     @Autowired
     SysUserRepository userRepository;
@@ -49,6 +52,7 @@ public class SysUserServiceImpl implements SysUserService {
     @Override
     public RestResult login(LoginRequest loginRequest, HttpSession session) {
         UsernamePasswordAuthenticationToken authRequest = new UsernamePasswordAuthenticationToken(loginRequest.getUserName(), loginRequest.getPassword());
+        logger.info("用户登录请求：", loginRequest);
         try {
             //校验图形验证码
             RestResult restResult = captchaService.validate(loginRequest.getKey(), loginRequest.getImageCode());
@@ -63,6 +67,7 @@ public class SysUserServiceImpl implements SysUserService {
             Authentication authentication = authenticationManager.authenticate(authRequest);
             SecurityContextHolder.getContext().setAuthentication(authentication);
             session.setAttribute("SPRING_SECURITY_CONTEXT",SecurityContextHolder.getContext());
+            logger.info("用户登录返回：登录成功");
            return new RestResult(ResultCode.SUCCESS.getCode(), "登录成功", SecurityContextHolder.getContext().getAuthentication().getPrincipal());
             /*if(user != null) {
                 //储存到session中
@@ -71,6 +76,7 @@ public class SysUserServiceImpl implements SysUserService {
 
             }*/
         } catch (AuthenticationException e) {
+            logger.info("用户登录返回：用户名/密码错误");
             return new RestResult(ResultCode.FAIL.getCode(),"用户名/密码错误");
         }
 

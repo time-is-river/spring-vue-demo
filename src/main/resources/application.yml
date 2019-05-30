@@ -1,13 +1,17 @@
 # set server port
 server:
   port: 8888  # 配置端口
-  context-path: / # 项目启动地址为 localhost:8888/
+  context-path: /api # 设置项目访问地址  项目启动地址为 localhost:8888/api
 
 spring:
   datasource: # set database config
-    url: jdbc:mysql://localhost:3306/personal_business?useUnicode=true&characterEncoding=utf8&useSSL=false
-    username: root
-    password: 13914823128m
+    # url: jdbc:mysql://localhost:3306/personal_business?useUnicode=true&characterEncoding=utf8&useSSL=false
+    # username: root
+    # password: 13914823128m
+    # 阿里云 ESC mysql 地址
+    url: jdbc:mysql://47.98.176.197/personal_business?useUnicode=true&characterEncoding=utf8&useSSL=false
+    username: chenxx
+    password: chenxx0505
     driver-class-name: com.mysql.jdbc.Driver
   jpa: # set jpamybatis
     database: MYSQL # specify ths DBMS
