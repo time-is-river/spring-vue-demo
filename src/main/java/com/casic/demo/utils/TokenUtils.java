@@ -29,7 +29,7 @@ public class TokenUtils {
     private final String SECRET = "auth_chm222";
 
     //token有效期（分钟）
-    private static final long VALIDATE_MINUTE = 1;
+    private static final long VALIDATE_MINUTE = 10080;
 
     //加密算法
     private static  Algorithm algorithm;
