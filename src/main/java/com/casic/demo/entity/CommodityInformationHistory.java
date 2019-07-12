@@ -7,7 +7,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.util.Date;
 
 /**
@@ -26,7 +25,9 @@ public class CommodityInformationHistory {
     private String barcode;
     @Column(columnDefinition = "varchar(50) comment '商品名称'")
     private String NAME;
-    @Column(columnDefinition = "DECIMAL(16,2) comment '价格'")
+    @Column(columnDefinition = "DECIMAL(16,2) comment '零售价格'")
+    private BigDecimal salePrice;
+    @Column(columnDefinition = "DECIMAL(16,2) comment '进货价格'")
     private BigDecimal price;
     @Column(columnDefinition = "varchar(50) comment '商品规格'")
     private String spec;

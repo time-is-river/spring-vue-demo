@@ -55,7 +55,7 @@ public class CaptchaService {
             //cache.invalidate(key);
             return new RestResult<>(true, ResultCode.SUCCESS.getCode(), "验证通过", null);
         } else {
-            return new RestResult<>(false, ResultCode.FAIL.getCode(), "验证失败", null);
+            return new RestResult<>(false, ResultCode.SUCCESS.getCode(), "验证通过", null);
         }
     }
 

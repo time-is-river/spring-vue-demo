@@ -1,20 +1,18 @@
 package com.casic.demo.config.security;
 
-import com.casic.demo.service.security.JwtSysUserDetailsServiceImpl;
+import com.casic.demo.common.SuccessHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.context.annotation.Bean;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.web.csrf.CsrfFilter;
-import org.springframework.web.filter.CharacterEncodingFilter;
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.web.authentication.Http403ForbiddenEntryPoint;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsUtils;
 
 /**
  * @author
@@ -25,10 +23,12 @@ import org.springframework.web.filter.CharacterEncodingFilter;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
+    @Autowired
+    SuccessHandler successHandler;
+
     @Bean
-    @Override
-    protected AuthenticationManager authenticationManager() throws Exception {
-        return super.authenticationManager();
+    public JwtAuthenticationTokenFilter authenticationTokenFilterBean() throws Exception {
+        return new JwtAuthenticationTokenFilter();
     }
 
     @Override
@@ -43,33 +43,28 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests()
-                .antMatchers("/","/commodity/*").permitAll()
+        http.csrf().disable()
+                // 开启跨域(spring security 需要设置允许跨域 否则 请求接口验证不同通过 前端会因为 跨域问题 获取不到 返回)
+                .cors().and()
+                // 基于token，所以不需要session
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
+                .authorizeRequests()
+                .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
+                .antMatchers(
+                        "/captcha/*",
+                        "/user/logout",
+                        "/user/login")
+                 .permitAll()
+                // 除上面外的所有请求全部需要鉴权认证
+                .anyRequest().authenticated()
                 //.anyRequest().authenticated()
                 .and()
-                .formLogin()
-                .loginPage("/user/login")
-                .permitAll()
-                .and()
-                .logout()
-                .logoutUrl("/user/logout")
-                .permitAll();
-        http.csrf().disable();
+                .addFilterBefore(authenticationTokenFilterBean(), UsernamePasswordAuthenticationFilter.class)
+        .exceptionHandling().authenticationEntryPoint(new Http403ForbiddenEntryPoint());
         //解决中文乱码问题
-        CharacterEncodingFilter filter = new CharacterEncodingFilter();
+        /*CharacterEncodingFilter filter = new CharacterEncodingFilter();
         filter.setEncoding("UTF-8");
         filter.setForceEncoding(true);
-        http.addFilterBefore(filter, CsrfFilter.class);
+        http.addFilterBefore(filter, CsrfFilter.class);*/
     }
-
-    @Autowired
-    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(systemUserService());
-    }
-
-    @Bean
-    public UserDetailsService systemUserService() {
-        return new JwtSysUserDetailsServiceImpl();
-    }
-
 }

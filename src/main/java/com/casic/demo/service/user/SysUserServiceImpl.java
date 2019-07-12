@@ -2,7 +2,8 @@ package com.casic.demo.service.user;
 
 import com.casic.demo.entity.*;
 import com.casic.demo.service.captcha.CaptchaService;
-import com.casic.demo.utils.ResultGenerator;
+import com.casic.demo.service.security.JwtSysUserDetailsServiceImpl;
+import com.casic.demo.utils.TokenUtils;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,10 +13,12 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import com.casic.demo.dao.repository.SysUserRepository;
 
 import javax.servlet.http.HttpSession;
+import java.util.HashMap;
 
 /**
  * 用户服务层实现类
@@ -33,6 +36,9 @@ public class SysUserServiceImpl implements SysUserService {
 
     @Autowired
     private CaptchaService captchaService;
+
+    @Autowired
+    private JwtSysUserDetailsServiceImpl userDetailsService;
 
     @Override
     public SysUser saveUser(SysUser user) {
@@ -52,6 +58,9 @@ public class SysUserServiceImpl implements SysUserService {
     @Override
     public RestResult login(LoginRequest loginRequest, HttpSession session) {
         UsernamePasswordAuthenticationToken authRequest = new UsernamePasswordAuthenticationToken(loginRequest.getUserName(), loginRequest.getPassword());
+        final Authentication authentication = authenticationManager.authenticate(authRequest);
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        final UserDetails userDetails = userDetailsService.loadUserByUsername(loginRequest.getUserName());
         logger.info("用户登录请求：", loginRequest);
         try {
             //校验图形验证码
@@ -63,12 +72,12 @@ public class SysUserServiceImpl implements SysUserService {
             if (StringUtils.isEmpty(loginRequest.getUserName()) || StringUtils.isEmpty(loginRequest.getPassword())) {
                 new RestResult(ResultCode.FAIL.getCode(),"用户名/密码不能为空");
             }
-            //此处调用loadUserByUserName
-            Authentication authentication = authenticationManager.authenticate(authRequest);
-            SecurityContextHolder.getContext().setAuthentication(authentication);
-            session.setAttribute("SPRING_SECURITY_CONTEXT",SecurityContextHolder.getContext());
+            String token = TokenUtils.generateToken(userDetails);
+            HashMap<String,String> data = new HashMap(6);
+            data.put("token", token);
+            data.put("userName", loginRequest.getUserName());
             logger.info("用户登录返回：登录成功");
-           return new RestResult(ResultCode.SUCCESS.getCode(), "登录成功", SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+            return new RestResult(ResultCode.SUCCESS.getCode(), "登录成功", data);
             /*if(user != null) {
                 //储存到session中
                 session.setAttribute("user",user);

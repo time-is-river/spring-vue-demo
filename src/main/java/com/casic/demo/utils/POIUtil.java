@@ -3,7 +3,6 @@ package com.casic.demo.utils;
 import java.io.*;
 import java.util.Iterator;
 
-import org.apache.commons.lang.StringUtils;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.*;
 
@@ -14,12 +13,12 @@ import org.apache.poi.xssf.usermodel.*;
  */
 public class POIUtil {
 
-   /* private static String downLoadPath = "D:/testDownloads/处理结果1.txt";
+   private static String downLoadPath = "D:/testDownloads/处理结果1.txt";
     //private static String downLoadName = "处理结果.txt";
-    *//**
+    /**
      * 读取excel内容 并写入到文本文件中
      * @param filePath
-     *//*
+     */
     public static void readExcel (String filePath) {
         try {
             BufferedWriter writer;
@@ -36,12 +35,13 @@ public class POIUtil {
                     count++;
                     continue;
                 }
-                String columnOne = getValue(row.getCell(0));
-                //String columnTwo = getValue(row.getCell(1));
-                if (columnOne.contains("_")) {
+                String columnOne = getValue(row.getCell(1));
+                String columnTwo = getValue(row.getCell(2));
+                /*if (columnOne.contains("_")) {
                     int position = columnOne.indexOf("_");
                     columnOne = columnOne.substring(0,position)+ StringUtils.capitalize(columnOne.substring(position+1));
-                }
+                }*/
+                System.out.println("put(\""+columnTwo+"\", \""+columnOne+"\");");
                 writer.write("处理excel 内容 导出 第"+count+"行: 第一列:"+columnOne);
                 count++;
             }
@@ -53,11 +53,11 @@ public class POIUtil {
 
     }
 
-    *//**
+    /**
      * 获取EXCEL cell中的值
      * @param cell
      * @return
-     *//*
+     */
     private static String getValue(XSSFCell cell) {
         String value;
         switch (cell.getCellType()) {
@@ -73,11 +73,11 @@ public class POIUtil {
         return value;
     }
 
-    *//**
+    /**
      * 创建文件
      * @param fileName
      * @return
-     *//*
+     */
     private static boolean createFile(String fileName) {
         File file = new File(fileName);
         if (file.exists()) {
@@ -104,5 +104,5 @@ public class POIUtil {
             //创建文件异常
             return false;
         }
-    }*/
+    }
 }

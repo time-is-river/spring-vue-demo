@@ -6,6 +6,7 @@
           id,
           barcode,
           NAME,
+          sale_price AS salePrice,
           price,
           spec,
           repertory,

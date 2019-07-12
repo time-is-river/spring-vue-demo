@@ -3,23 +3,17 @@ package com.casic.demo.service.commodity;
 import com.casic.demo.dao.mapper.CommodityInformationMapper;
 import com.casic.demo.dao.repository.CommodityInformationRepository;
 import com.casic.demo.entity.CommodityInformation;
-import com.casic.demo.entity.JwtSysUser;
 import com.casic.demo.entity.RestResult;
 import com.casic.demo.entity.SysUser;
 import com.casic.demo.request.CommodityRequest;
 import com.casic.demo.service.user.SysUserService;
 import com.casic.demo.utils.BarcodeUtils;
 import com.casic.demo.utils.Constants;
-import com.github.pagehelper.Constant;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.Date;
 
 
@@ -87,6 +81,7 @@ public class CommodityServiceImpl implements CommodityService{
                     CommodityInformation commodityInformation = commodityInformationRepository.findByIdAndIsDeleted(commodityInformationRequest.getId(), false);
                     commodityInformation.setBarcode(commodityInformationRequest.getBarcode());
                     commodityInformation.setPrice(commodityInformationRequest.getPrice());
+                    commodityInformation.setSalePrice(commodityInformationRequest.getSalePrice());
                     commodityInformation.setName(commodityInformationRequest.getName());
                     commodityInformation.setSpec(commodityInformationRequest.getSpec());
                     commodityInformation.setRemark(commodityInformationRequest.getRemark());

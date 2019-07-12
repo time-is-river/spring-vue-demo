@@ -7,8 +7,8 @@ package com.casic.demo.utils;
 public interface Constants {
 
     enum ReturnCode {
-        SUCCESS(1, "成功"),
-        FAILURE(0, "失败");
+        SUCCESS(200, "成功"),
+        FAILURE(400, "失败");
         private int code;
         private String msg;
         ReturnCode(int code, String mag) {
