@@ -125,6 +125,7 @@ public class CommodityServiceImpl implements CommodityService{
     public RestResult remove(Long id) {
         RestResult restResult = new RestResult();
         restResult.setSuccess(true);
+        restResult.setCode(Constants.ReturnCode.SUCCESS.getCode());
         try {
             int count = commodityInformationRepository.updateIsDeleted(true, id);
             if (count != 1) {
